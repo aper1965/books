@@ -1,43 +1,57 @@
 package com.example.mybooks.model
 
-data class BooksItem(
-    val id: Int,
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import org.json.JSONObject
+
+@Serializable
+data class BookItem(
     val title: String,
     val date: String
 )
-
+@Serializable
 data class WriterItem(
     val writer: String,
-    val id: Int
+    val id: Int,
+    val books: ArrayList<BookItem>
 )
 
 class BooksData {
 
     val writerArray = ArrayList<WriterItem>()
-    val bookArray = ArrayList<BooksItem>()
 
     fun addWriter(writerItem: WriterItem) {
         writerArray.add(writerItem)
     }
 
-    fun getAllWriter(): ArrayList<WriterItem> {
-        return writerArray
+    fun createBook(title: String, date: String, id: Int): BookItem {
+        val book = BookItem(title = title, date = date)
+        return book
     }
 
-    fun addBook(booksItem: BooksItem) {
-        bookArray.add(booksItem)
+    fun createWriter(writerObj: JsonObject): WriterItem {
+        val writerItem: WriterItem = Json.decodeFromString(writerObj.toString())
+        return writerItem
     }
+    /*
+    fun createWriter(writer: String, id: Int, books: ArrayList<BookItem>): WriterItem {
+        val writer = WriterItem(writer = writer, id = id, books = books)
+        return writer
+    }
+*/
 
-    fun getWriterBook(index: Int): ArrayList<BooksItem> {
-        val ba = ArrayList<BooksItem>()
-
-        val id = writerArray[index].id
-
-        for(i in bookArray)
-            if ( id == i.id ) {
-                ba.add(i)
+    fun getWriterBooks(writer: String): ArrayList<BookItem>? {
+        for(wr in writerArray) {
+            if(wr.writer == writer) {
+                return wr.books
             }
+        }
+        return null
+    }
 
-        return ba
+    fun getSize(): Int {
+        return writerArray.size
     }
 }
