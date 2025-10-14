@@ -31,14 +31,12 @@ fun getRequest(url: String, bd: BooksData) {
             val json = Json { ignoreUnknownKeys = true }
             val result = response.body.string()
             val jsonData = json.parseToJsonElement(result).jsonArray
-            Log.v(tag, result)
+//            Log.v(tag, result)
 
             for ( w in jsonData.iterator() ) {
                 val wi: WriterItem = bd.createWriter(w.jsonObject)
                 bd.addWriter(wi)
             }
-            Log.v(tag, "Ready")
-
         }
     })
 }

@@ -18,6 +18,11 @@ data class WriterItem(
     val books: ArrayList<BookItem>
 )
 
+data class WriterSimple(
+    val writer: String,
+    val id: Int
+)
+
 class BooksData {
 
     val writerArray = ArrayList<WriterItem>()
@@ -42,9 +47,18 @@ class BooksData {
     }
 */
 
-    fun getWriterBooks(writer: String): ArrayList<BookItem>? {
+    fun getWriters(): ArrayList<WriterSimple > {
+        val tempArray: ArrayList<WriterSimple> = arrayListOf()
+        for(w in writerArray) {
+            val tempW  = WriterSimple(w.writer, w.id)
+            tempArray.add(tempW)
+        }
+        return tempArray
+    }
+
+    fun getWriterBooks(id: Int): ArrayList<BookItem>? {
         for(wr in writerArray) {
-            if(wr.writer == writer) {
+            if(wr.id == id) {
                 return wr.books
             }
         }
