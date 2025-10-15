@@ -49,7 +49,8 @@ class BooksData {
 
     fun getWriters(): ArrayList<WriterSimple > {
         val tempArray: ArrayList<WriterSimple> = arrayListOf()
-        for(w in writerArray) {
+        val sortArr = writerArray.sortedWith(compareBy({it.writer}))
+        for(w in sortArr) {
             val tempW  = WriterSimple(w.writer, w.id)
             tempArray.add(tempW)
         }
