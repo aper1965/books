@@ -16,10 +16,12 @@ kotlinxSerializationJson = "1.9.0"
 lifecycleRuntimeKtx = "2.9.4"
 activityCompose = "1.11.0"
 composeBom = "2025.09.01"
+navigationCompose = "2.9.5"
 okhttp = "5.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 gson = { module = "com.google.code.gson:gson", version.ref = "googleGson" }
 json = { module = "org.json:json", version.ref = "jsonJson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

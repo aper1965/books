@@ -1,10 +1,8 @@
 package com.example.mybooks.model
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
-import org.json.JSONObject
 
 @Serializable
 data class BookItem(
