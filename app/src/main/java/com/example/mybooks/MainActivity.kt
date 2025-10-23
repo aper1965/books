@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,11 +50,6 @@ import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : ComponentActivity() {
-    val bd = BooksData()
-
-    init {
-        getBooks(bd)
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,16 +63,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-fun getBooks(bd: BooksData) {
-    val thread = CoroutineScope(Dispatchers.IO).launch{
-        getRequest("https://granlof.hopto.org/books/writers/books", bd)
-    }
-    runBlocking {
-        thread.join()
-        delay(500)
-        Log.v("MyBooks", bd.getSize().toString())
-    }
-}
 @Composable
 fun WritersList(name: String, bd: BooksData) {
     val writer = bd.getWriters()
