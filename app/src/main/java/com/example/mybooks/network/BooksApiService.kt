@@ -1,7 +1,7 @@
 package com.example.mybooks.network
 
 import android.util.Log
-import com.example.mybooks.model.BooksData
+import com.example.mybooks.model.BooksViewModel
 import com.example.mybooks.model.WriterItem
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -13,7 +13,7 @@ import kotlinx.serialization.json.*
 import kotlin.reflect.typeOf
 
 
-fun getRequest(url: String, bd: BooksData) {
+fun getRequest(url: String, bvm: BooksViewModel) {
     val client = OkHttpClient()
     val tag = "MyBook2"
 
@@ -34,8 +34,8 @@ fun getRequest(url: String, bd: BooksData) {
 //            Log.v(tag, result)
 
             for ( w in jsonData.iterator() ) {
-                val wi: WriterItem = bd.createWriter(w.jsonObject)
-                bd.addWriter(wi)
+                val wi: WriterItem = bvm.createWriter(w.jsonObject)
+                bvm.addWriter(wi)
             }
         }
     })

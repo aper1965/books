@@ -33,11 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.mybooks.model.BooksData
+import com.example.mybooks.model.BooksViewModel
+import com.example.mybooks.model.WriterSimple
 import com.example.mybooks.network.getRequest
 import com.example.mybooks.ui.theme.MyBooksTheme
 import kotlinx.coroutines.CoroutineScope
@@ -55,7 +58,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyBooksTheme {
-                WritersList(name = "Android", bd)
+                val vm = ViewModelProvider(this).get(BooksViewModel::class.java)
+                val writers = vm.getWriters()
+                WritersList(name = "Android", writers)
 //                BooksList(1, bd)
 
             }
@@ -64,17 +69,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun WritersList(name: String, bd: BooksData) {
-    val writer = bd.getWriters()
+fun WritersList(name: String, writers: ArrayList<WriterSimple>) {
     val modifier = Modifier.padding(horizontal = 10.dp)
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-    ) {
-        composable("Writers") { WritersList(name, bd) }
-        composable("Books") { BooksList(id, bd, navController) }
-    }
+//    NavHost(
+//        navController = navController,
+//    ) {
+//        composable("Writers") { WritersList(name, bd) }
+//        composable("Books") { BooksList(id, bd, navController) }
+//    }
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
@@ -84,40 +88,41 @@ fun WritersList(name: String, bd: BooksData) {
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
             items(
-                writer,
+                writers,
                 key = { item -> item.id })
             { item ->
                 Text(item.writer, modifier = modifier.
-                        selectable(true, onClick = {navController.navigate("Books")}))
+                        selectable(true, onClick = { Click(item.id, vm)}))
             }
         }
     }
 }
-
-public fun Click(id: Int, bd: BooksData) {
+@Composable
+public fun Click(id: Int, vm: BooksViewModel) {
+    vm.setChoosenId(id)
     Log.v("MyBooks ID", bd.getWriterBooks(id).toString())
 }
 
-@Composable
-fun BooksList(id: Int, bd: BooksData, navController: NavController) {
-    val books = bd.getWriterBooks(id)
-    val modifier = Modifier.padding(horizontal = 10.dp)
-    Column(modifier = Modifier
-        .fitInside(WindowInsetsRulers.SafeDrawing.current)
-    ) {
-        Row {
-            Text(text = "Books", modifier = modifier)
-            Text(text = "Date", Modifier.padding(horizontal = 120.dp))
-        }
-        HorizontalDivider(thickness = 4.dp)
-        LazyColumn {
-            items(count = (books?.size ?: Int) as Int, key = null)
-            { item ->
-                Row {
-                    Text(text = books?.get(item)?.title ?: String(), modifier = modifier)
-                    Text(text = books?.get(item)?.date ?: String(), Modifier.padding(horizontal = 120.dp))
-                }
-            }
-        }
-    }
-}
+//@Composable
+//fun BooksList(id: Int, bd: BooksData, navController: NavController) {
+//    val books = bd.getWriterBooks(id)
+//    val modifier = Modifier.padding(horizontal = 10.dp)
+//    Column(modifier = Modifier
+//        .fitInside(WindowInsetsRulers.SafeDrawing.current)
+//    ) {
+//        Row {
+//            Text(text = "Books", modifier = modifier)
+//            Text(text = "Date", Modifier.padding(horizontal = 120.dp))
+//        }
+//        HorizontalDivider(thickness = 4.dp)
+//        LazyColumn {
+//            items(count = (books?.size ?: Int) as Int, key = null)
+//            { item ->
+//                Row {
+//                    Text(text = books?.get(item)?.title ?: String(), modifier = modifier)
+//                    Text(text = books?.get(item)?.date ?: String(), Modifier.padding(horizontal = 120.dp))
+//                }
+//            }
+//        }
+//    }
+//}

@@ -2,7 +2,6 @@ package com.example.mybooks.model
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.mybooks.getBooks
 import com.example.mybooks.network.getRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +31,7 @@ data class WriterSimple(
 
 class BooksViewModel : ViewModel() {
 
+    var choosen_id: Int = 0
     val writerArray = ArrayList<WriterItem>()
 
     init {
@@ -68,9 +68,13 @@ class BooksViewModel : ViewModel() {
         return tempArray
     }
 
-    fun getWriterBooks(id: Int): ArrayList<BookItem>? {
+    fun setChoosenId(id: Int) {
+        choosen_id = id
+    }
+
+    fun getWriterBooks(): ArrayList<BookItem>? {
         for(wr in writerArray) {
-            if(wr.id == id) {
+            if(wr.id == choosen_id) {
                 return wr.books
             }
         }
@@ -83,11 +87,11 @@ class BooksViewModel : ViewModel() {
 
     fun getBooks() {
         val thread = CoroutineScope(Dispatchers.IO).launch{
-            getRequest("https://granlof.hopto.org/books/writers/books", self())
+            getRequest("https://granlof.hopto.org/books/writers/books", this@BooksViewModel)
         }
         runBlocking {
             thread.join()
-            delay(500)
+            delay(1000)
             Log.v("MyBooks", writerArray.size.toString())
         }
     }
