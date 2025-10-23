@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -60,7 +61,7 @@ class MainActivity : ComponentActivity() {
             MyBooksTheme {
                 val vm = ViewModelProvider(this).get(BooksViewModel::class.java)
                 val writers = vm.getWriters()
-                WritersList(name = "Android", writers)
+                WritersList(name = "Android", vm)
 //                BooksList(1, bd)
 
             }
@@ -69,7 +70,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun WritersList(name: String, writers: ArrayList<WriterSimple>) {
+fun WritersList(name: String, vm: BooksViewModel) {
+    val writers = vm.getWriters()
     val modifier = Modifier.padding(horizontal = 10.dp)
     val navController = rememberNavController()
 
@@ -92,15 +94,15 @@ fun WritersList(name: String, writers: ArrayList<WriterSimple>) {
                 key = { item -> item.id })
             { item ->
                 Text(item.writer, modifier = modifier.
-                        selectable(true, onClick = { Click(item.id, vm)}))
+                        clickable { click(item.id, vm)})
             }
         }
     }
 }
-@Composable
-public fun Click(id: Int, vm: BooksViewModel) {
+
+public fun click(id: Int, vm: BooksViewModel) {
     vm.setChoosenId(id)
-    Log.v("MyBooks ID", bd.getWriterBooks(id).toString())
+    Log.v("MyBooks ID", vm.getWriterBooks().toString())
 }
 
 //@Composable
