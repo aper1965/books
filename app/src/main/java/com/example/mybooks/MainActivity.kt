@@ -1,8 +1,11 @@
 package com.example.mybooks
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -32,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -61,7 +65,7 @@ class MainActivity : ComponentActivity() {
             MyBooksTheme {
                 val vm = ViewModelProvider(this).get(BooksViewModel::class.java)
                 val writers = vm.getWriters()
-                WritersList(name = "Android", vm)
+                WritersList(vm)
 //                BooksList(1, bd)
 
             }
@@ -70,10 +74,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun WritersList(name: String, vm: BooksViewModel) {
+fun WritersList(vm: BooksViewModel) {
     val writers = vm.getWriters()
     val modifier = Modifier.padding(horizontal = 10.dp)
     val navController = rememberNavController()
+    val activity = LocalActivity.current as Activity
 
 //    NavHost(
 //        navController = navController,
@@ -87,6 +92,8 @@ fun WritersList(name: String, vm: BooksViewModel) {
         Row {
             Text(text = "Writers", modifier = modifier)
         }
+        var isClicked: Boolean = false
+        var columnId: Int = 0
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
             items(
@@ -94,20 +101,39 @@ fun WritersList(name: String, vm: BooksViewModel) {
                 key = { item -> item.id })
             { item ->
                 Text(item.writer, modifier = modifier.
-                        clickable { click(item.id, vm)})
+                        clickable {
+                            columnId = item.id
+//                            click(item.id, vm)
+                            isClicked = true
+                            val bookList = vm.getWriterBooksId(item.id)
+                            val intent: Intent = Intent(activity, BookActivity::class.java)
+//                            intent.putExtra("books", bookList)
+                            activity.startActivity(intent)
+                        })
+                }
             }
+        Log.v("MyBooks ID2", vm.getWriterBooks().toString())
+
+        if(isClicked) {
+            Log.v("MyBooks ID2", vm.getWriterBooks().toString())
+            vm.setChoosenId(columnId)
+
+            BooksList()
+
         }
     }
+    Log.v("MyBooks ID2", vm.getWriterBooks().toString())
+
 }
 
-public fun click(id: Int, vm: BooksViewModel) {
-    vm.setChoosenId(id)
-    Log.v("MyBooks ID", vm.getWriterBooks().toString())
-}
+//public fun click(id: Int, vm: BooksViewModel) {
+//    vm.setChoosenId(id)
+//    Log.v("MyBooks ID", vm.getWriterBooks().toString())
+//}
 
 //@Composable
-//fun BooksList(id: Int, bd: BooksData, navController: NavController) {
-//    val books = bd.getWriterBooks(id)
+//fun BooksList(vm: BooksViewModel) {
+//    val books = vm.getWriterBooks()
 //    val modifier = Modifier.padding(horizontal = 10.dp)
 //    Column(modifier = Modifier
 //        .fitInside(WindowInsetsRulers.SafeDrawing.current)

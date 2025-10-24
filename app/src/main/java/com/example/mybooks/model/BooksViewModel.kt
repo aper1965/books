@@ -81,6 +81,15 @@ class BooksViewModel : ViewModel() {
         return null
     }
 
+    fun getWriterBooksId(id: Int): ArrayList<BookItem>? {
+        for(wr in writerArray) {
+            if(wr.id == id) {
+                return wr.books
+            }
+        }
+        return null
+    }
+
     fun getSize(): Int {
         return writerArray.size
     }
