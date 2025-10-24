@@ -3,6 +3,7 @@ package com.example.mybooks.model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.mybooks.network.getRequest
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -81,10 +82,11 @@ class BooksViewModel : ViewModel() {
         return null
     }
 
-    fun getWriterBooksId(id: Int): ArrayList<BookItem>? {
+    fun getWriterBooksId(id: Int): String? {
         for(wr in writerArray) {
             if(wr.id == id) {
-                return wr.books
+                val gson: Gson = Gson()
+                return gson.toJson(wr.books)
             }
         }
         return null

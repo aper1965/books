@@ -66,8 +66,6 @@ class MainActivity : ComponentActivity() {
                 val vm = ViewModelProvider(this).get(BooksViewModel::class.java)
                 val writers = vm.getWriters()
                 WritersList(vm)
-//                BooksList(1, bd)
-
             }
         }
     }
@@ -80,20 +78,12 @@ fun WritersList(vm: BooksViewModel) {
     val navController = rememberNavController()
     val activity = LocalActivity.current as Activity
 
-//    NavHost(
-//        navController = navController,
-//    ) {
-//        composable("Writers") { WritersList(name, bd) }
-//        composable("Books") { BooksList(id, bd, navController) }
-//    }
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
         Row {
             Text(text = "Writers", modifier = modifier)
         }
-        var isClicked: Boolean = false
-        var columnId: Int = 0
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
             items(
@@ -102,29 +92,18 @@ fun WritersList(vm: BooksViewModel) {
             { item ->
                 Text(item.writer, modifier = modifier.
                         clickable {
-                            columnId = item.id
-//                            click(item.id, vm)
-                            isClicked = true
                             val bookList = vm.getWriterBooksId(item.id)
-                            val intent: Intent = Intent(activity, BookActivity::class.java)
-//                            intent.putExtra("books", bookList)
+                            val intent: Intent = Intent(activity,
+                                BookActivity::class.java)
+                            intent.putExtra("books", bookList)
                             activity.startActivity(intent)
                         })
                 }
             }
-        Log.v("MyBooks ID2", vm.getWriterBooks().toString())
-
-        if(isClicked) {
-            Log.v("MyBooks ID2", vm.getWriterBooks().toString())
-            vm.setChoosenId(columnId)
-
-            BooksList()
-
         }
     }
-    Log.v("MyBooks ID2", vm.getWriterBooks().toString())
 
-}
+
 
 //public fun click(id: Int, vm: BooksViewModel) {
 //    vm.setChoosenId(id)

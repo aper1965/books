@@ -3,6 +3,7 @@ package com.example.mybooks
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
@@ -23,29 +24,36 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mybooks.model.BookItem
 import com.example.mybooks.model.BooksViewModel
 import com.example.mybooks.ui.theme.MyBooksTheme
+import com.google.gson.Gson
+import kotlinx.serialization.json.Json
+import kotlin.toString
 
 class BookActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val myIntent = intent
-        val books = myIntent.getStringArrayListExtra("vm")
+//        val books = myIntent.getStringArrayListExtra("books")
+        val tb = myIntent.getStringExtra("books")
+//        drop(1)?.dropLast(1)?.split(",")
+        val gson: Gson = Gson()
+        val books = gson.fromJson(tb, Array<BookItem>::class.java)
         setContent {
             MyBooksTheme {
-                BooksList()
+                BooksList(books)
             }
         }
 
     }
 }
 @Composable
-fun BooksList() {
-    //fun BooksList(books: ArrayList<BookItem>) {
+fun BooksList(books: Array<BookItem>?) {
     val modifier = Modifier.padding(horizontal = 10.dp)
     val activity = LocalActivity.current as Activity
 
-    Column(modifier = Modifier
-        .fitInside(WindowInsetsRulers.SafeDrawing.current)
+    Column(
+        modifier = Modifier
+            .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
         Row {
             Text(text = "Books", modifier = modifier)
@@ -53,22 +61,25 @@ fun BooksList() {
         }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
-//            items(count = (books?.size ?: Int) as Int, key = null)
-            items(count = 2, key = null)
+            items(count = (books?.size ?: Int) as Int, key = null)
             { item ->
                 Row {
-//                    Text(text = books?.get(item)?.title ?: String(), modifier = modifier)
-//                    Text(text = books?.get(item)?.date ?: String(), Modifier.padding(horizontal = 120.dp))
-                    Text(text = "Hejsan", modifier = modifier)
-                    Text(text = "Provar", Modifier.padding(horizontal = 120.dp))
+                    if (books != null) {
+                        Text(text = books?.get(item)?.title ?: String(), modifier = modifier)
+                        Text(
+                            text = books?.get(item)?.date ?: String(),
+                            Modifier.padding(horizontal = 120.dp)
+                        )
+                    }
                 }
+            }
 
-                }
         }
         Row {
             Button(
                 onClick = {
-                    val intent: Intent = Intent(activity, MainActivity::class.java)
+                    val intent: Intent = Intent(activity,
+                        MainActivity::class.java)
                     activity.startActivity(intent)
                 }) {
                 Text(text = "Back")
@@ -77,3 +88,4 @@ fun BooksList() {
 
     }
 }
+
