@@ -25,6 +25,7 @@ data class WriterItem(
     val books: ArrayList<BookItem>
 )
 
+@Serializable
 data class WriterSimple(
     val writer: String,
     val id: Int

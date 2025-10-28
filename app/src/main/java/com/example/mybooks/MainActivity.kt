@@ -1,61 +1,23 @@
 package com.example.mybooks
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.fitInside
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.WindowInsetsRulers
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mybooks.model.BooksViewModel
 import com.example.mybooks.model.WriterSimple
-import com.example.mybooks.network.getRequest
+import com.example.mybooks.ui.screens.WriterList
 import com.example.mybooks.ui.theme.MyBooksTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Serializable
+import androidx.navigation.compose.composable
+import com.example.mybooks.ui.screens.BookList
 
+@Serializable
+data class Writers(val writers: ArrayList<WriterSimple>)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,72 +26,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyBooksTheme {
                 val vm = ViewModelProvider(this).get(BooksViewModel::class.java)
-                val writers = vm.getWriters()
-                WritersList(vm)
+                StartBook(vm)
             }
         }
     }
 }
 
 @Composable
-fun WritersList(vm: BooksViewModel) {
-    val writers = vm.getWriters()
-    val modifier = Modifier.padding(horizontal = 10.dp)
+fun StartBook(vm: BooksViewModel) {
     val navController = rememberNavController()
-    val activity = LocalActivity.current as Activity
 
-    Column(modifier = Modifier
-        .fitInside(WindowInsetsRulers.SafeDrawing.current)
-    ) {
-        Row {
-            Text(text = "Writers", modifier = modifier)
+    NavHost(navController, startDestination = "writers") {
+            composable(route = "writers") {
+            WriterList(navController, vm)
         }
-        HorizontalDivider(thickness = 4.dp)
-        LazyColumn {
-            items(
-                writers,
-                key = { item -> item.id })
-            { item ->
-                Text(item.writer, modifier = modifier.
-                        clickable {
-                            val bookList = vm.getWriterBooksId(item.id)
-                            val intent: Intent = Intent(activity,
-                                BookActivity::class.java)
-                            intent.putExtra("books", bookList)
-                            activity.startActivity(intent)
-                        })
-                }
-            }
+        composable(route = "books") {
+            BookList(navController, vm)
         }
     }
-
-
-
-//public fun click(id: Int, vm: BooksViewModel) {
-//    vm.setChoosenId(id)
-//    Log.v("MyBooks ID", vm.getWriterBooks().toString())
-//}
-
-//@Composable
-//fun BooksList(vm: BooksViewModel) {
-//    val books = vm.getWriterBooks()
-//    val modifier = Modifier.padding(horizontal = 10.dp)
-//    Column(modifier = Modifier
-//        .fitInside(WindowInsetsRulers.SafeDrawing.current)
-//    ) {
-//        Row {
-//            Text(text = "Books", modifier = modifier)
-//            Text(text = "Date", Modifier.padding(horizontal = 120.dp))
-//        }
-//        HorizontalDivider(thickness = 4.dp)
-//        LazyColumn {
-//            items(count = (books?.size ?: Int) as Int, key = null)
-//            { item ->
-//                Row {
-//                    Text(text = books?.get(item)?.title ?: String(), modifier = modifier)
-//                    Text(text = books?.get(item)?.date ?: String(), Modifier.padding(horizontal = 120.dp))
-//                }
-//            }
-//        }
-//    }
-//}
+}

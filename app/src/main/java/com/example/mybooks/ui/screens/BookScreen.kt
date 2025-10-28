@@ -1,13 +1,8 @@
-package com.example.mybooks
+package com.example.mybooks.ui.screens
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fitInside
@@ -20,36 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import com.example.mybooks.MainActivity
 import com.example.mybooks.model.BookItem
 import com.example.mybooks.model.BooksViewModel
-import com.example.mybooks.ui.theme.MyBooksTheme
-import com.google.gson.Gson
-import kotlinx.serialization.json.Json
-import kotlin.toString
+import kotlin.collections.ArrayList
 
-class BookActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        val myIntent = intent
-//        val books = myIntent.getStringArrayListExtra("books")
-        val tb = myIntent.getStringExtra("books")
-//        drop(1)?.dropLast(1)?.split(",")
-        val gson: Gson = Gson()
-        val books = gson.fromJson(tb, Array<BookItem>::class.java)
-        setContent {
-            MyBooksTheme {
-                BooksList(books)
-            }
-        }
-
-    }
-}
 @Composable
-fun BooksList(books: Array<BookItem>?) {
+fun BookList(navController: NavController, vm: BooksViewModel) {
     val modifier = Modifier.padding(horizontal = 10.dp)
     val activity = LocalActivity.current as Activity
+    val books = vm.getWriterBooks()
 
     Column(
         modifier = Modifier
@@ -78,9 +54,7 @@ fun BooksList(books: Array<BookItem>?) {
         Row {
             Button(
                 onClick = {
-                    val intent: Intent = Intent(activity,
-                        MainActivity::class.java)
-                    activity.startActivity(intent)
+                    navController.navigate(route = "writers")
                 }) {
                 Text(text = "Back")
             }
