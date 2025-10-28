@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,9 +35,8 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
                 key = { item -> item.id })
             { item ->
                 Text(item.writer, modifier = modifier.
-                clickable {vm.setChoosenId(item.id)
-                    navController.navigate(route = "books")
-                })
+                    clickable {vm.setChoosenId(item.id)
+                    navController.navigate(route = "books") })
             }
         }
     }

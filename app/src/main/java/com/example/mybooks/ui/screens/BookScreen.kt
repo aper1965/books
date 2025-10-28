@@ -24,22 +24,22 @@ fun BookList(navController: NavController, vm: BooksViewModel) {
         modifier = Modifier
             .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
-        Row {
+//        Row {
             Text(text = "Books", modifier = modifier)
-            Text(text = "Date", Modifier.padding(horizontal = 120.dp))
-        }
+//            Text(text = "Date", Modifier.padding(horizontal = 50.dp))
+//        }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
             items(count = (books?.size ?: Int) as Int, key = null)
             { item ->
-                Row {
+//                Row {
                     if (books != null) {
-                        Text(text = books?.get(item)?.title ?: String(), modifier = modifier)
+                        Text(text = books[item].title, modifier = modifier)
                         Text(
-                            text = books?.get(item)?.date ?: String(),
-                            Modifier.padding(horizontal = 120.dp)
+                            text = books[item].date,
+                            Modifier.padding(horizontal = 50.dp)
                         )
-                    }
+//                    }
                 }
             }
 
