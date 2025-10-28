@@ -36,11 +36,11 @@ class MainActivity : ComponentActivity() {
 fun StartBook(vm: BooksViewModel) {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "writers") {
-            composable(route = "writers") {
+    NavHost(navController = navController, startDestination = "writers") {
+            composable("writers") {
             WriterList(navController, vm)
         }
-        composable(route = "books") {
+        composable("books") {
             BookList(navController, vm)
         }
     }

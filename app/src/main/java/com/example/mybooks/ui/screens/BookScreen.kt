@@ -1,8 +1,5 @@
 package com.example.mybooks.ui.screens
 
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fitInside
@@ -16,15 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.mybooks.MainActivity
-import com.example.mybooks.model.BookItem
 import com.example.mybooks.model.BooksViewModel
-import kotlin.collections.ArrayList
 
 @Composable
 fun BookList(navController: NavController, vm: BooksViewModel) {
     val modifier = Modifier.padding(horizontal = 10.dp)
-    val activity = LocalActivity.current as Activity
     val books = vm.getWriterBooks()
 
     Column(

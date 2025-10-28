@@ -1,7 +1,5 @@
 package com.example.mybooks.ui.screens
 
-import android.app.Activity
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,15 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.mybooks.model.BooksViewModel
 
 @Composable
 fun WriterList(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
     val modifier = Modifier.padding(horizontal = 10.dp)
-    val navController = rememberNavController()
-    val activity = LocalActivity.current as Activity
 
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
@@ -39,7 +34,8 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
                 key = { item -> item.id })
             { item ->
                 Text(item.writer, modifier = modifier.
-                clickable {navController.navigate(route = "books")
+                clickable {vm.setChoosenId(item.id)
+                    navController.navigate(route = "books")
                 })
             }
         }

@@ -3,14 +3,14 @@ package com.example.mybooks.network
 import android.util.Log
 import com.example.mybooks.model.BooksViewModel
 import com.example.mybooks.model.WriterItem
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.Callback
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import kotlin.reflect.typeOf
 
 
 fun getRequest(url: String, bvm: BooksViewModel) {
