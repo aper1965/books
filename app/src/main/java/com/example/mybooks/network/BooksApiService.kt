@@ -30,8 +30,8 @@ fun getRequest(url: String, bvm: BooksViewModel) {
             // Handle success
             val json = Json { ignoreUnknownKeys = true }
             val result = response.body.string()
-            val jsonData = json.parseToJsonElement(result).jsonArray
-//            Log.v(tag, result)
+            val jsonData = json.parseToJsonElement(result).jsonObject
+            Log.v(tag, result)
 
             for ( w in jsonData.iterator() ) {
                 val wi: WriterItem = bvm.createWriter(w.jsonObject)

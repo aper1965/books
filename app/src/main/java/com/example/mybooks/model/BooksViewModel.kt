@@ -26,6 +26,11 @@ data class WriterItem(
 )
 
 @Serializable
+data class BookDate(
+    var date: String
+)
+
+@Serializable
 data class WriterSimple(
     val writer: String,
     val id: Int
@@ -35,6 +40,7 @@ class BooksViewModel : ViewModel() {
 
     var choosen_id: Int = 0
     val writerArray = ArrayList<WriterItem>()
+    val bookDate: BookDate = BookDate("")
 
     init {
         getBooks()
@@ -42,6 +48,14 @@ class BooksViewModel : ViewModel() {
 
     fun addWriter(writerItem: WriterItem) {
         writerArray.add(writerItem)
+    }
+
+    fun addBookDate(bDate: String) {
+          bookDate.date = bDate
+    }
+
+    fun getBookDate(): String {
+        return bookDate.date
     }
 
     fun createBook(title: String, date: String, id: Int): BookItem {
