@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fitInside
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,6 +29,13 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
         Row {
             Text(text = "Writers", modifier = modifier)
             Text(text = "Date $bookDate", Modifier.padding(horizontal = 40.dp))
+            Button(
+                onClick = {
+                    navController.navigate(route = "add")
+                }) {
+                Text(text = "Add book")
+            }
+
         }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {

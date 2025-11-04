@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mybooks.model.BooksViewModel
+import com.example.mybooks.ui.screens.AddBook
 import com.example.mybooks.ui.screens.BookList
 import com.example.mybooks.ui.screens.WriterList
 import com.example.mybooks.ui.theme.MyBooksTheme
@@ -37,6 +38,9 @@ fun StartBook(vm: BooksViewModel) {
         }
         composable("books") {
             BookList(navController, vm)
+        }
+        composable("add") {
+            AddBook(navController, vm)
         }
     }
 }

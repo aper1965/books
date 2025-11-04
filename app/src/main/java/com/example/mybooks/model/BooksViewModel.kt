@@ -38,7 +38,7 @@ data class WriterSimple(
 
 class BooksViewModel : ViewModel() {
 
-    var choosen_id: Int = 0
+    var choosenId: Int = 0
     val writerArray = ArrayList<WriterItem>()
     val bookDate: BookDate = BookDate("")
 
@@ -85,12 +85,12 @@ class BooksViewModel : ViewModel() {
     }
 
     fun setChoosenId(id: Int) {
-        choosen_id = id
+        choosenId = id
     }
 
     fun getWriterBooks(): ArrayList<BookItem>? {
         for(wr in writerArray) {
-            if(wr.id == choosen_id) {
+            if(wr.id == choosenId) {
                 return wr.books
             }
         }
