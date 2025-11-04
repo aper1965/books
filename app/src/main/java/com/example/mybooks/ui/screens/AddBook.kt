@@ -1,6 +1,7 @@
 package com.example.mybooks.ui.screens
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mybooks.model.BooksViewModel
 
@@ -27,27 +30,61 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
     val modifier = Modifier.padding(horizontal = 10.dp)
     val bookDate = vm.getBookDate()
+    val mContext = LocalContext.current
+    val textDate = remember { mutableStateOf("") }
+    val textTitle = remember { mutableStateOf("") }
+    val textWriter = remember { mutableStateOf("") }
+    var id: Int? = null
 
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
         Row {
-            Text(text = "Add a book", modifier = modifier)
-        }
-        val textDate = remember { mutableStateOf("") }
-        val textTitle = remember { mutableStateOf("") }
-        val textWriter = remember { mutableStateOf("") }
-        var id: Int? = null
+            Text(text = "Add a book", fontSize = 30.sp, modifier = modifier)
+            Button(
+                onClick = {
+                    navController.navigate(route = "writers")
+                }) {
+                Text(text = "Cancel")
+            }
+            Button(
+                onClick = {
+                    if (textDate.value.isEmpty() or textTitle.value.isEmpty() or
+                        textWriter.value.isEmpty()
+                    ) {
+                        Toast.makeText(mContext, "Info is missing", Toast.LENGTH_LONG)
+                            .show()
+                    }
 
-        Row {
-            TextField(
-                value = textTitle.value,
-                onValueChange = { textTitle.value = it },
-                label = { Text("Add title") },
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+                    if (id != null) {
+                        Log.v(
+                            "add not null", textWriter.value
+                                    + " " + textTitle.value + " " +
+                                    textDate.value + " " + id.toString()
+                        )
+                    } else {
+                        Log.v(
+                            "add null", textWriter.value
+                                    + " " + textTitle.value + " " +
+                                    textDate.value + " " + id.toString()
+                        )
+                    }
+
+//                        navController.navigate(route = "add")
+                }) {
+                Text(text = "Save")
+            }
         }
+        HorizontalDivider(thickness = 4.dp)
+            Row {
+                TextField(
+                    value = textTitle.value,
+                    onValueChange = { textTitle.value = it },
+                    label = { Text("Add title") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
 
         Row {
             TextField(
@@ -87,32 +124,7 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
                 })
             }
         }
-            Column {
-                Button(
-                    onClick = {
-                        if ( id != null) {
-                            Log.v("add not null", textWriter.value
-                                    + " " + textTitle.value + " " +
-                            textDate.value + " " + id.toString())
-                        } else {
-                            Log.v("add null", textWriter.value
-                                    + " " + textTitle.value + " " +
-                                    textDate.value + " " + id.toString())
-                        }
-
-//                        navController.navigate(route = "add")
-                    }) {
-                    Text(text = "Save book")
-                }
-                Button(
-                    onClick = {
-                        navController.navigate(route = "writers")
-                    }) {
-                    Text(text = "cancel")
-                }
-
-            }
-    }
+        }
     }
 }
 

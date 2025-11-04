@@ -122,4 +122,7 @@ class BooksViewModel : ViewModel() {
         }
     }
 
+    fun postBooks() {
+
+    }
 }

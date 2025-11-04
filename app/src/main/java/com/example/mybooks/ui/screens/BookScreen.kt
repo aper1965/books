@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mybooks.model.BooksViewModel
 
@@ -25,7 +26,7 @@ fun BookList(navController: NavController, vm: BooksViewModel) {
             .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
 //        Row {
-            Text(text = "Books", modifier = modifier)
+            Text(text = "Books", modifier = modifier, fontSize = 30.sp)
 //            Text(text = "Date", Modifier.padding(horizontal = 50.dp))
 //        }
         HorizontalDivider(thickness = 4.dp)

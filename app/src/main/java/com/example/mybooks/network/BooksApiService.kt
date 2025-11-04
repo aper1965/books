@@ -45,3 +45,22 @@ fun getRequest(url: String, bvm: BooksViewModel) {
         }
     })
 }
+
+fun postRequest(url: String, body: String) {
+    val client = OkHttpClient()
+    val tag = "MyBook2"
+
+    val request = Request.Builder()
+        .url(url)
+        .build()
+
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: java.io.IOException) {
+            Log.v(tag, e.toString())
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            // Handle success
+        }
+    })
+}

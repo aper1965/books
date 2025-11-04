@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.WindowInsetsRulers
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mybooks.model.BooksViewModel
 
@@ -27,7 +29,7 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
         Row {
-            Text(text = "Writers", modifier = modifier)
+            Text(text = "Writers", modifier = modifier, fontSize = 30.sp)
             Text(text = "Date $bookDate", Modifier.padding(horizontal = 40.dp))
             Button(
                 onClick = {
