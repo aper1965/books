@@ -92,7 +92,8 @@ class BooksViewModel : ViewModel() {
 
     fun getBooks() {
         val thread = CoroutineScope(Dispatchers.IO).launch{
-            getRequest("https://granlof.hopto.org/books/writers/books", this@BooksViewModel)
+            getRequest("https://granlof.hopto.org/books/writers/books",
+                this@BooksViewModel)
         }
         runBlocking {
             thread.join()
@@ -102,8 +103,9 @@ class BooksViewModel : ViewModel() {
     }
 
     fun postBooks(name: String, title: String, date: String) {
+        val year = ""
         val thread = CoroutineScope(Dispatchers.IO).launch{
-            postRequest("https://granlof.hopto.org/books/book", name, title, date)
+            postRequest("https://granlof.hopto.org/books/book", name, title, year, date)
         }
         runBlocking {
             thread.join()

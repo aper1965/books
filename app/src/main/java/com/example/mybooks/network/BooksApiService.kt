@@ -48,7 +48,7 @@ fun getRequest(url: String, bvm: BooksViewModel) {
     })
 }
 
-fun postRequest(url: String, name: String, title: String, date: String) {
+fun postRequest(url: String, name: String, title: String, year: String, date: String) {
     val client = OkHttpClient()
     val tag = "MyBook10"
 
@@ -57,7 +57,9 @@ fun postRequest(url: String, name: String, title: String, date: String) {
     val jsonObject = JSONObject()
     jsonObject.put("name", name)
     jsonObject.put("title", title)
+    jsonObject.put("year", year)
     jsonObject.put("date", date)
+    Log.v(tag, jsonObject.toString())
 
     val body = jsonObject.toString().toRequestBody(mediaType)
 
