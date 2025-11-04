@@ -1,6 +1,5 @@
 package com.example.mybooks.ui.screens
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -24,25 +23,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mybooks.model.BooksViewModel
-import com.example.mybooks.network.postRequest
-import kotlinx.coroutines.delay
 
 @Composable
 fun AddBook(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
     val modifier = Modifier.padding(horizontal = 10.dp)
-    val bookDate = vm.getBookDate()
     val mContext = LocalContext.current
     val textDate = remember { mutableStateOf("") }
     val textTitle = remember { mutableStateOf("") }
     val textWriter = remember { mutableStateOf("") }
-    var id: Int? = null
 
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
         Row {
             Text(text = "Add a book", fontSize = 30.sp, modifier = modifier)
+        }
+        HorizontalDivider(thickness = 4.dp)
+        Row {
             Button(
                 onClick = {
                     navController.navigate(route = "writers")
@@ -57,23 +55,26 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
                         Toast.makeText(mContext, "Info is missing", Toast.LENGTH_LONG)
                             .show()
                     }
-                    vm.postBooks(textWriter.value, textTitle.value, textDate.value)
-                    navController.navigate(route = "writers")
+                    else {
+                        vm.postBooks(textWriter.value, textTitle.value, textDate.value)
+                        vm.deleteData()
+                        vm.getBooks()
+                        navController.navigate(route = "writers")
+                    }
                 }) {
                 Text(text = "Save")
             }
         }
         HorizontalDivider(thickness = 4.dp)
-            Row {
-                TextField(
-                    value = textTitle.value,
-                    onValueChange = { textTitle.value = it },
-                    label = { Text("Add title") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
-
+        Row {
+            TextField(
+                value = textTitle.value,
+                onValueChange = { textTitle.value = it },
+                label = { Text("Add title") },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
         Row {
             TextField(
                 value = textDate.value,
@@ -88,16 +89,13 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
             TextField(
                 value = textWriter.value,
                 onValueChange = {
-                    textWriter.value = it
-                    id = null },
-                label = { Text("Pick a writer or add another one") },
+                    textWriter.value = it },
+                label = { Text("Pick a writer or add new one") },
                 modifier = Modifier
                     .fillMaxWidth()
             )
         }
-
         HorizontalDivider(thickness = 4.dp)
-
         Row {
         LazyColumn {
             items(
@@ -106,9 +104,6 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
             { item ->
                 Text(item.writer, modifier = modifier.clickable {
                     textWriter.value = item.writer
-                    Log.v("add before click", "Id: " + id.toString())
-                    id = item.id
-                    Log.v("add click", "Id: " + id.toString())
                 })
             }
         }

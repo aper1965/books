@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.mybooks.network.getRequest
 import com.example.mybooks.network.postRequest
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -39,12 +38,16 @@ data class WriterSimple(
 
 class BooksViewModel : ViewModel() {
 
-    var chooseId: Int = 0
+    var chooseId: Int? = null
     val writerArray = ArrayList<WriterItem>()
     val bookDate: BookDate = BookDate("")
 
     init {
         getBooks()
+    }
+
+    fun deleteData() {
+        writerArray.clear()
     }
 
     fun addWriter(writerItem: WriterItem) {
@@ -59,25 +62,14 @@ class BooksViewModel : ViewModel() {
         return bookDate.date
     }
 
-    fun createBook(title: String, date: String, id: Int): BookItem {
-        val book = BookItem(title = title, date = date)
-        return book
-    }
-
     fun createWriter(writerObj: JsonObject): WriterItem {
         val writerItem: WriterItem = Json.decodeFromString(writerObj.toString())
         return writerItem
     }
-    /*
-    fun createWriter(writer: String, id: Int, books: ArrayList<BookItem>): WriterItem {
-        val writer = WriterItem(writer = writer, id = id, books = books)
-        return writer
-    }
-*/
 
     fun getWriters(): ArrayList<WriterSimple > {
         val tempArray: ArrayList<WriterSimple> = arrayListOf()
-        val sortArr = writerArray.sortedWith(compareBy({it.writer}))
+        val sortArr = writerArray.sortedWith(compareBy { it.writer })
         for(w in sortArr) {
             val tempW  = WriterSimple(w.writer, w.id)
             tempArray.add(tempW)
@@ -96,20 +88,6 @@ class BooksViewModel : ViewModel() {
             }
         }
         return null
-    }
-
-    fun getWriterBooksId(id: Int): String? {
-        for(wr in writerArray) {
-            if(wr.id == id) {
-                val gson: Gson = Gson()
-                return gson.toJson(wr.books)
-            }
-        }
-        return null
-    }
-
-    fun getSize(): Int {
-        return writerArray.size
     }
 
     fun getBooks() {
