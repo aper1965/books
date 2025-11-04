@@ -44,7 +44,7 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
                 key = { item -> item.id })
             { item ->
                 Text(item.writer, modifier = modifier.
-                    clickable {vm.setChoosenId(item.id)
+                    clickable {vm.addChooseId(item.id)
                     navController.navigate(route = "books") })
             }
         }
