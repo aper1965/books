@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mybooks.model.BooksViewModel
+import com.example.mybooks.network.postRequest
+import kotlinx.coroutines.delay
 
 @Composable
 fun AddBook(navController: NavController, vm: BooksViewModel) {
@@ -55,22 +57,8 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
                         Toast.makeText(mContext, "Info is missing", Toast.LENGTH_LONG)
                             .show()
                     }
-
-                    if (id != null) {
-                        Log.v(
-                            "add not null", textWriter.value
-                                    + " " + textTitle.value + " " +
-                                    textDate.value + " " + id.toString()
-                        )
-                    } else {
-                        Log.v(
-                            "add null", textWriter.value
-                                    + " " + textTitle.value + " " +
-                                    textDate.value + " " + id.toString()
-                        )
-                    }
-
-//                        navController.navigate(route = "add")
+                    vm.postBooks(textWriter.value, textTitle.value, textDate.value)
+                    navController.navigate(route = "writers")
                 }) {
                 Text(text = "Save")
             }

@@ -6,12 +6,17 @@ import com.example.mybooks.model.WriterItem
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-import org.json.JSONObject
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONException
+import org.json.JSONObject
 
 
 fun getRequest(url: String, bvm: BooksViewModel) {
@@ -46,12 +51,22 @@ fun getRequest(url: String, bvm: BooksViewModel) {
     })
 }
 
-fun postRequest(url: String, body: String) {
+fun postRequest(url: String, name: String, title: String, date: String) {
     val client = OkHttpClient()
-    val tag = "MyBook2"
+    val tag = "MyBook10"
+
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+
+    val jsonObject = JSONObject()
+    jsonObject.put("name", name)
+    jsonObject.put("title", title)
+    jsonObject.put("date", date)
+
+    val body = jsonObject.toString().toRequestBody(mediaType)
 
     val request = Request.Builder()
         .url(url)
+        .post(body)
         .build()
 
     client.newCall(request).enqueue(object : Callback {

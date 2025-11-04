@@ -3,6 +3,7 @@ package com.example.mybooks.model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.mybooks.network.getRequest
+import com.example.mybooks.network.postRequest
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -122,7 +123,13 @@ class BooksViewModel : ViewModel() {
         }
     }
 
-    fun postBooks() {
-
+    fun postBooks(name: String, title: String, date: String) {
+        val thread = CoroutineScope(Dispatchers.IO).launch{
+            postRequest("https://granlof.hopto.org/books/book", name, title, date)
+        }
+        runBlocking {
+            thread.join()
+            delay(1000)
+        }
     }
 }
