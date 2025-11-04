@@ -21,12 +21,14 @@ import com.example.mybooks.model.BooksViewModel
 fun WriterList(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
     val modifier = Modifier.padding(horizontal = 10.dp)
+    val bookDate = vm.getBookDate()
 
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
         Row {
             Text(text = "Writers", modifier = modifier)
+            Text(text = "Date $bookDate", Modifier.padding(horizontal = 40.dp))
         }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {

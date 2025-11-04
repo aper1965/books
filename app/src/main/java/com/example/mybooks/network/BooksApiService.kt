@@ -6,6 +6,7 @@ import com.example.mybooks.model.WriterItem
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
+import org.json.JSONObject
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -30,8 +31,12 @@ fun getRequest(url: String, bvm: BooksViewModel) {
             // Handle success
             val json = Json { ignoreUnknownKeys = true }
             val result = response.body.string()
-            val jsonData = json.parseToJsonElement(result).jsonObject
-            Log.v(tag, result)
+
+            val resultJson = JSONObject(result)
+            val bookDate = resultJson["date"].toString()
+            bvm.setBookDate(bookDate)
+            val bookData = resultJson["data"].toString()
+            val jsonData = json.parseToJsonElement(bookData).jsonArray
 
             for ( w in jsonData.iterator() ) {
                 val wi: WriterItem = bvm.createWriter(w.jsonObject)

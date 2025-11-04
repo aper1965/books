@@ -50,7 +50,7 @@ class BooksViewModel : ViewModel() {
         writerArray.add(writerItem)
     }
 
-    fun addBookDate(bDate: String) {
+    fun setBookDate(bDate: String) {
           bookDate.date = bDate
     }
 
