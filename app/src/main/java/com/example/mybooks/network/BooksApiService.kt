@@ -37,6 +37,8 @@ fun getRequest(url: String, bvm: BooksViewModel) {
             val resultJson = JSONObject(result)
             val bookDate = resultJson["date"].toString()
             bvm.setBookDate(bookDate)
+            val bookDb = resultJson["db"].toString()
+            bvm.setBookDb(bookDb)
             val bookData = resultJson["data"].toString()
             val jsonData = json.parseToJsonElement(bookData).jsonArray
 

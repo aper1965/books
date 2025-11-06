@@ -31,6 +31,11 @@ data class BookDate(
 )
 
 @Serializable
+data class BookDb(
+    var db: String
+)
+
+@Serializable
 data class WriterSimple(
     val writer: String,
     val id: Int
@@ -41,6 +46,7 @@ class BooksViewModel : ViewModel() {
     var chooseId: Int? = null
     val writerArray = ArrayList<WriterItem>()
     val bookDate: BookDate = BookDate("")
+    val bookDb: BookDb = BookDb("")
 
     init {
         getBooks()
@@ -60,6 +66,13 @@ class BooksViewModel : ViewModel() {
 
     fun getBookDate(): String {
         return bookDate.date
+    }
+    fun setBookDb(bD: String) {
+        bookDb.db = bD
+    }
+
+    fun getBookDb(): String {
+        return bookDb.db
     }
 
     fun createWriter(writerObj: JsonObject): WriterItem {

@@ -23,13 +23,16 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
     val modifier = Modifier.padding(horizontal = 10.dp)
     val bookDate = vm.getBookDate()
+    val bookDb = vm.getBookDb()
 
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
     ) {
         Row {
             Text(text = "Writers", modifier = modifier, fontSize = 30.sp)
-            Text(text = "Date $bookDate", Modifier.padding(horizontal = 40.dp, vertical = 10.dp), fontSize = 20.sp)
+            Text(text = "Date $bookDate", Modifier.padding(horizontal = 22.dp, vertical = 10.dp),
+                fontSize = 20.sp)
+            Text(text = bookDb, Modifier.padding(vertical = 10.dp),fontSize = 20.sp)
         }
         HorizontalDivider(thickness = 4.dp)
         Row {
