@@ -49,6 +49,14 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
             }
             Button(
                 onClick = {
+                    textWriter.value = ""
+                    textTitle.value = ""
+                    textDate.value = ""
+                }) {
+                Text(text = "Clear")
+            }
+            Button(
+                onClick = {
                     if (textDate.value.isEmpty() or textTitle.value.isEmpty() or
                         textWriter.value.isEmpty()
                     ) {
