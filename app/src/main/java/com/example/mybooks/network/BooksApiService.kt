@@ -16,12 +16,18 @@ import okhttp3.Response
 import org.json.JSONObject
 
 
-fun getRequest(url: String, bvm: BooksViewModel) {
+fun getRequest(url: String, bvm: BooksViewModel, db: String) {
     val client = OkHttpClient()
     val tag = "MyBook2"
+    val mediaType = "application/json; charset=utf-8".toMediaType()
+
+    val jsonObject = JSONObject()
+    jsonObject.put("db", db)
+    val body = jsonObject.toString().toRequestBody(mediaType)
 
     val request = Request.Builder()
         .url(url)
+        .post(body)
         .build()
 
     client.newCall(request).enqueue(object : Callback {
@@ -37,8 +43,8 @@ fun getRequest(url: String, bvm: BooksViewModel) {
             val resultJson = JSONObject(result)
             val bookDate = resultJson["date"].toString()
             bvm.setBookDate(bookDate)
-            val bookDb = resultJson["db"].toString()
-            bvm.setBookDb(bookDb)
+//            val bookDb = resultJson["db"].toString()
+//            bvm.setBookDb(bookDb)
             val bookData = resultJson["data"].toString()
             val jsonData = json.parseToJsonElement(bookData).jsonArray
 

@@ -46,7 +46,7 @@ class BooksViewModel : ViewModel() {
     var chooseId: Int? = null
     val writerArray = ArrayList<WriterItem>()
     val bookDate: BookDate = BookDate("")
-    val bookDb: BookDb = BookDb("")
+    val bookDb: BookDb = BookDb("proddb")
 
     init {
         getBooks()
@@ -104,9 +104,11 @@ class BooksViewModel : ViewModel() {
     }
 
     fun getBooks() {
+        val db = getBookDb()
+
         val thread = CoroutineScope(Dispatchers.IO).launch{
             getRequest("https://granlof.hopto.org/books/writers/books",
-                this@BooksViewModel)
+                this@BooksViewModel, db)
         }
         runBlocking {
             thread.join()
