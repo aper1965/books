@@ -43,7 +43,7 @@ fun StartBook(vm: BooksViewModel) {
         composable("add") {
             AddBook(navController, vm)
         }
-        composable("setting") {
+        composable("settings") {
             ChangeSettings(navController, vm)
         }
     }

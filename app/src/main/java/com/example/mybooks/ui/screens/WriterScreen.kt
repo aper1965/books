@@ -51,6 +51,12 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
                     Text(text = "Update")
                 }
             }
+            Button(
+                onClick = {
+                    navController.navigate(route = "settings")
+                }) {
+                Text(text = "Settings")
+            }
         }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
