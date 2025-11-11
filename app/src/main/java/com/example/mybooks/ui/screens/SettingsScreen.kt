@@ -1,6 +1,8 @@
 package com.example.mybooks.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +19,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +42,9 @@ fun ChangeSettings(navController: NavController, vm: BooksViewModel) {
     val modifier = Modifier.padding(horizontal = 10.dp)
     val startDb = vm.getBookDb()
     var mSelectedText by remember { mutableStateOf(startDb) }
+    var newUrl = remember { mutableStateOf("") }
+    val url = vm.baseUrl
+
 
     Column(
         modifier = Modifier
@@ -57,11 +63,17 @@ fun ChangeSettings(navController: NavController, vm: BooksViewModel) {
             }
             Button(
                 onClick = {
-                    if ( startDb != mSelectedText ) {
+                    Log.v("MyBooks newUrl", newUrl.value)
+
+                    if (startDb != mSelectedText) {
                         vm.setBookDb(mSelectedText)
                         vm.deleteData()
                         vm.getBooks()
                     }
+//                    if (newUrl.value != url) {
+//                        vm.setUrl(newUrl.value)
+//                    }
+                    vm.getWriters()
                     navController.navigate(route = "writers")
                 }
             ) {
@@ -71,50 +83,67 @@ fun ChangeSettings(navController: NavController, vm: BooksViewModel) {
         HorizontalDivider(thickness = 4.dp)
 
 //        Log.v("MyBooks startDb", startDb)
+        Box() {
+            var mExpanded by remember { mutableStateOf(false) }
+            var mTextFieldSize by remember { mutableStateOf(Size.Zero) }
+            val dbTypes = vm.getDbTypes()
+            val icon = if (mExpanded)
+                Icons.Filled.KeyboardArrowUp
+            else
+                Icons.Filled.KeyboardArrowDown
 
-        var mExpanded by remember { mutableStateOf(false) }
-        var mTextFieldSize by remember { mutableStateOf(Size.Zero)}
-        val dbTypes = vm.getDbTypes()
-        val icon = if (mExpanded)
-            Icons.Filled.KeyboardArrowUp
-        else
-            Icons.Filled.KeyboardArrowDown
+            OutlinedTextField(
+                value = mSelectedText,
+                onValueChange = { mSelectedText = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        // This value is used to assign to
+                        // the DropDown the same width
+                        mTextFieldSize = coordinates.size.toSize()
+                    },
+                label = { Text("Label") },
+                trailingIcon = {
+                    Icon(
+                        icon, "contentDescription",
+                        Modifier.clickable { mExpanded = !mExpanded })
+                }
+            )
 
-        OutlinedTextField(
-            value = mSelectedText,
-            onValueChange = { mSelectedText = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { coordinates ->
-                    // This value is used to assign to
-                    // the DropDown the same width
-                    mTextFieldSize = coordinates.size.toSize()
-                },
-            label = {Text("Label")},
-            trailingIcon = {
-                Icon(icon,"contentDescription",
-                    Modifier.clickable { mExpanded = !mExpanded })
+            DropdownMenu(
+                expanded = mExpanded,
+                onDismissRequest = { mExpanded = false },
+                modifier = Modifier
+                    .width(with(LocalDensity.current) { mTextFieldSize.width.toDp() })
+            ) {
+                dbTypes.forEach { label ->
+                    DropdownMenuItem(
+                        text = { Text(text = label) },
+                        onClick = {
+                            mSelectedText = label
+                            mExpanded = false
+                        }
+                    )
+                }
             }
-        )
+        }
+        HorizontalDivider(thickness = 4.dp)
 
-        DropdownMenu(
-            expanded = mExpanded,
-            onDismissRequest = { mExpanded = false },
-        modifier = Modifier
-            .width(with(LocalDensity.current) { mTextFieldSize.width.toDp() })
-        ) {
-            dbTypes.forEach { label ->
-                DropdownMenuItem(
-                    text = { Text(text = label) },
-                    onClick = {
-                        mSelectedText = label
-                        mExpanded = false
-                    }
+        Row {
+                TextField(
+                    value = newUrl.value,
+                    onValueChange = {
+                        newUrl.value = it
+                    },
+                    label = { Text("Change the url") },
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
             }
         }
+
     }
-}
+
 
 
 

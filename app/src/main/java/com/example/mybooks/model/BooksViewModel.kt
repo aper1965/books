@@ -43,6 +43,7 @@ data class WriterSimple(
 
 class BooksViewModel : ViewModel() {
 
+    var baseUrl: String = "https://granlof.hopto.org/books"
     val dbType = listOf("proddb", "testdb")
     var chooseId: Int? = null
     val writerArray = ArrayList<WriterItem>()
@@ -70,6 +71,14 @@ class BooksViewModel : ViewModel() {
     }
     fun setBookDb(bD: String) {
         bookDb.db = bD
+    }
+
+    fun getUrl(): String {
+        return baseUrl
+    }
+
+    fun setUrl(url: String) {
+        baseUrl = url
     }
 
     fun getBookDb(): String {
@@ -110,9 +119,12 @@ class BooksViewModel : ViewModel() {
 
     fun getBooks() {
         val db = getBookDb()
+        val url = getUrl()
+        Log.v("MyBooks url", url)
 
         val thread = CoroutineScope(Dispatchers.IO).launch{
-            getRequest("https://granlof.hopto.org/books/writers/books",
+            getRequest(
+                "$url/writers/books",
                 this@BooksViewModel, db)
         }
         runBlocking {
@@ -125,8 +137,10 @@ class BooksViewModel : ViewModel() {
     fun postBooks(name: String, title: String, date: String) {
         val year = ""
         val db = getBookDb()
+        val url = getUrl()
+
         val thread = CoroutineScope(Dispatchers.IO).launch{
-            postRequest("https://granlof.hopto.org/books/book", name, title, year, date, db)
+            postRequest("$url/book", name, title, year, date, db)
         }
         runBlocking {
             thread.join()
