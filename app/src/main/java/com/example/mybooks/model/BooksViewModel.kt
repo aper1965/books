@@ -43,6 +43,7 @@ data class WriterSimple(
 
 class BooksViewModel : ViewModel() {
 
+    val dbType = listOf("proddb", "testdb")
     var chooseId: Int? = null
     val writerArray = ArrayList<WriterItem>()
     val bookDate: BookDate = BookDate("")
@@ -101,6 +102,10 @@ class BooksViewModel : ViewModel() {
             }
         }
         return null
+    }
+
+    fun getDbTypes(): List<String> {
+        return dbType
     }
 
     fun getBooks() {
