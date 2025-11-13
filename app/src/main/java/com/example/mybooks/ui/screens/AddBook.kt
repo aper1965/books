@@ -67,7 +67,7 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
                         vm.postBooks(textWriter.value, textTitle.value, textDate.value)
                         vm.deleteData()
                         vm.getBooks()
-                        navController.navigate(route = "writers")
+                        navController.navigateUp()
                     }
                 }) {
                 Text(text = "Save")
