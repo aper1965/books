@@ -43,7 +43,7 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
         Row {
             Button(
                 onClick = {
-                    navController.navigate(route = "writers")
+                    navController.navigateUp()
                 }) {
                 Text(text = "Cancel")
             }

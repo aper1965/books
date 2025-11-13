@@ -49,27 +49,6 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
             Text(text = bookDb, Modifier.padding(vertical = 10.dp),fontSize = 20.sp)
             Spacer(Modifier.weight(1f))
 
-//            Button(
-//                onClick = {
-//                    navController.navigate(route = "add")
-//                }) {
-//                Text(text = "Add book")
-//            }
-//            Row {
-//                Button(
-//                    onClick = {
-//                        vm.deleteData()
-//                        vm.getBooks()
-//                    }) {
-//                    Text(text = "Update")
-//                }
-//            }
-//            Button(
-//                onClick = {
-//                    navController.navigate(route = "settings")
-//                }) {
-//                Text(text = "Settings")
-//            }
             var expanded by remember { mutableStateOf(false) }
 
             Box (modifier = Modifier.padding(horizontal = 10.dp)) {
@@ -98,8 +77,6 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
                     )
                 }
             }
-
-
         }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
