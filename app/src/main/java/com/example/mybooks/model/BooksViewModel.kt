@@ -41,6 +41,11 @@ data class WriterSimple(
     val id: Int
 )
 
+data class ChoosenWriter(
+    var writer: String,
+)
+
+
 class BooksViewModel : ViewModel() {
 
     var baseUrl: String = "https://granlof.hopto.org/books"
@@ -50,8 +55,18 @@ class BooksViewModel : ViewModel() {
     val bookDate: BookDate = BookDate("")
     val bookDb: BookDb = BookDb("proddb")
 
+    val choosenWriter: ChoosenWriter = ChoosenWriter("")
+
     init {
         getBooks()
+    }
+
+    fun setChoosenWriter(writer: String) {
+        choosenWriter.writer = writer
+    }
+
+    fun getChoosenWriter(): String {
+        return choosenWriter.writer
     }
 
     fun deleteData() {

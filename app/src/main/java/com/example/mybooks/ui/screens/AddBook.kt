@@ -27,11 +27,13 @@ import com.example.mybooks.model.BooksViewModel
 @Composable
 fun AddBook(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
+    val choosedWriter = vm.getChoosenWriter()
     val modifier = Modifier.padding(horizontal = 10.dp)
     val mContext = LocalContext.current
     val textDate = remember { mutableStateOf("") }
     val textTitle = remember { mutableStateOf("") }
     val textWriter = remember { mutableStateOf("") }
+    val writer: String = remember { mutableStateOf(choosedWriter).toString() }
 
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
@@ -94,27 +96,42 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
         }
 
         Row {
-            TextField(
-                value = textWriter.value,
-                onValueChange = {
-                    textWriter.value = it },
-                label = { Text("Pick a writer or add new one") },
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
-        HorizontalDivider(thickness = 4.dp)
-        Row {
-        LazyColumn {
-            items(
-                writers,
-                key = { item -> item.id })
-            { item ->
-                Text(item.writer, modifier = modifier.clickable {
-                    textWriter.value = item.writer
-                })
+            if (choosedWriter.isEmpty()) {
+                TextField(
+                    value = textWriter.value,
+                    onValueChange = {
+                        textWriter.value = it
+                    },
+                    label = { Text("Pick a writer or add new one") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            } else {
+                textWriter.value = choosedWriter
+                TextField(
+                    value = choosedWriter,
+                    onValueChange = {
+                        textWriter.value = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
             }
         }
+        if (choosedWriter.isEmpty()) {
+
+            HorizontalDivider(thickness = 4.dp)
+            Row {
+                LazyColumn {
+                    items(writers,
+                    key = { item -> item.id })
+                    { item ->
+                    Text(item.writer, modifier = modifier.clickable {
+                        textWriter.value = item.writer
+                        })
+                    }
+                }
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ import com.example.mybooks.model.BooksViewModel
 fun BookList(navController: NavController, vm: BooksViewModel) {
     val modifier = Modifier.padding(horizontal = 10.dp)
     val books = vm.getWriterBooks()
+    val writer = vm.getChoosenWriter()
 
     Column(
         modifier = Modifier
@@ -29,11 +30,22 @@ fun BookList(navController: NavController, vm: BooksViewModel) {
         }
         HorizontalDivider(thickness = 4.dp)
         Row {
+            Text(text = writer, modifier = modifier, fontSize = 20.sp)
+        }
+        HorizontalDivider(thickness = 4.dp)
+        Row {
             Button(
                 onClick = {
+                    vm.setChoosenWriter("")
                     navController.navigateUp()
                 }) {
                 Text(text = "Back")
+            }
+            Button(
+                onClick = {
+                    navController.navigate(route = "add")
+                }) {
+                Text(text = "Add book")
             }
         }
         HorizontalDivider(thickness = 4.dp)
