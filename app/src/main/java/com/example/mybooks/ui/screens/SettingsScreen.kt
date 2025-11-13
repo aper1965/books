@@ -57,7 +57,7 @@ fun ChangeSettings(navController: NavController, vm: BooksViewModel) {
         Row {
             Button(
                 onClick = {
-                    navController.navigate(route = "writers")
+                    navController.navigateUp()
                 }) {
                 Text(text = "Cancel")
             }
@@ -74,7 +74,7 @@ fun ChangeSettings(navController: NavController, vm: BooksViewModel) {
 //                        vm.setUrl(newUrl.value)
 //                    }
                     vm.getWriters()
-                    navController.navigate(route = "writers")
+                    navController.navigateUp()
                 }
             ) {
                 Text(text = "Save")

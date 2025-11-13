@@ -31,7 +31,7 @@ fun BookList(navController: NavController, vm: BooksViewModel) {
         Row {
             Button(
                 onClick = {
-                    navController.navigate(route = "writers")
+                    navController.navigateUp()
                 }) {
                 Text(text = "Back")
             }
@@ -51,4 +51,6 @@ fun BookList(navController: NavController, vm: BooksViewModel) {
         }
     }
 }
+
+
 
