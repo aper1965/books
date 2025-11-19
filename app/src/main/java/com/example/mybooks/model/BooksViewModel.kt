@@ -12,6 +12,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlin.collections.plus
+
+private var year: String = ""
 
 @Serializable
 data class BookItem(
@@ -41,10 +44,9 @@ data class WriterSimple(
     val id: Int
 )
 
-data class ChoosenWriter(
+data class ChosenWriter(
     var writer: String,
 )
-
 
 class BooksViewModel : ViewModel() {
 
@@ -55,18 +57,26 @@ class BooksViewModel : ViewModel() {
     val bookDate: BookDate = BookDate("")
     val bookDb: BookDb = BookDb("proddb")
 
-    val choosenWriter: ChoosenWriter = ChoosenWriter("")
+    val chosenWriter: ChosenWriter = ChosenWriter("")
 
     init {
         getBooks()
     }
 
-    fun setChoosenWriter(writer: String) {
-        choosenWriter.writer = writer
+    fun setChosenWriter(writer: String) {
+        chosenWriter.writer = writer
     }
 
-    fun getChoosenWriter(): String {
-        return choosenWriter.writer
+    fun getChosenWriter(): String {
+        return chosenWriter.writer
+    }
+
+    fun setChosenYear(y: String) {
+        year = y
+    }
+
+    fun getChosenYear(): String {
+        return year
     }
 
     fun deleteData() {
@@ -86,6 +96,27 @@ class BooksViewModel : ViewModel() {
     }
     fun setBookDb(bD: String) {
         bookDb.db = bD
+    }
+
+    fun getBooksWriter(year: String): List<Any> {
+        var bookTotList: List<Any> = emptyList()
+
+        for(wr in writerArray) {
+            for(b in wr.books) {
+                val y = "20" + b.date.take(2)
+
+                if(b.date == year) {
+                    bookTotList += listOf(b.title, wr.writer)
+                }
+                else if (y == year){
+                    bookTotList += listOf(b.title, wr.writer)
+
+                }
+            }
+        }
+        Log.v("MyBooks tot", bookTotList.toString())
+
+        return bookTotList
     }
 
     fun getUrl(): String {
@@ -132,6 +163,25 @@ class BooksViewModel : ViewModel() {
         return dbType
     }
 
+    fun getYears(): List<String> {
+        var year: List<String> = emptyList()
+        for(wr in writerArray) {
+            for(b in wr.books) {
+                if(b.date == "2023" || b.date == "2024") {
+                    year += b.date
+                }
+                else {
+                    year += "20" + b.date.substring(0,2)
+                }
+            }
+        }
+        return year.distinct().sorted()
+    }
+
+    fun getBooksYears(year: String): List<String> {
+        return listOf("2023", "2024", "2025")
+    }
+
     fun getBooks() {
         val db = getBookDb()
         val url = getUrl()
@@ -163,3 +213,4 @@ class BooksViewModel : ViewModel() {
         }
     }
 }
+

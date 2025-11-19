@@ -27,7 +27,7 @@ import com.example.mybooks.model.BooksViewModel
 @Composable
 fun AddBook(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
-    val choosedWriter = vm.getChoosenWriter()
+    val choosedWriter = vm.getChosenWriter()
     val modifier = Modifier.padding(horizontal = 10.dp)
     val mContext = LocalContext.current
     val textDate = remember { mutableStateOf("") }

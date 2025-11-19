@@ -17,48 +17,40 @@ import androidx.navigation.NavController
 import com.example.mybooks.model.BooksViewModel
 
 @Composable
-fun BookList(navController: NavController, vm: BooksViewModel) {
+fun BookWriterList(navController: NavController, vm: BooksViewModel) {
     val modifier = Modifier.padding(horizontal = 10.dp)
-    val books = vm.getWriterBooks()
-    val writer = vm.getChosenWriter()
+    val year = vm.getChosenYear()
+    val booksList = vm.getBooksWriter(year)
 
     Column(
         modifier = Modifier
             .fitInside(WindowInsetsRulers.SafeDrawing.current)) {
         Row {
-            Text(text = "Books", modifier = modifier, fontSize = 30.sp)
+            Text(text = "Books red $year", modifier = modifier, fontSize = 30.sp)
         }
         HorizontalDivider(thickness = 4.dp)
         Row {
-            Text(text = writer, modifier = modifier, fontSize = 20.sp)
+            Text(text = year, modifier = modifier, fontSize = 20.sp)
         }
         HorizontalDivider(thickness = 4.dp)
         Row {
             Button(
                 onClick = {
-                    vm.setChosenWriter("")
+                    vm.setChosenYear("")
                     navController.navigateUp()
                 }) {
                 Text(text = "Back")
             }
-            Button(
-                onClick = {
-                    navController.navigate(route = "add")
-                }) {
-                Text(text = "Add book")
-            }
         }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
-            items(count = (books?.size ?: Int) as Int, key = null)
+            items(count = booksList.size , key = null)
             { item ->
-                if (books != null) {
-                    Text(text = books[item].title, modifier = modifier)
+                    Text(text = booksList[item].toString(), modifier = modifier)
                     Text(
-                        text = books[item].date,
+                        text = booksList[item].toString(),
                         Modifier.padding(horizontal = 50.dp)
                     )
-                }
             }
         }
     }

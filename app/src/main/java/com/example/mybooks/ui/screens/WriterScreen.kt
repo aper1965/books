@@ -72,6 +72,10 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
                         }
                     )
                     DropdownMenuItem(
+                        text = { Text("Statistics") },
+                        onClick = {  navController.navigate(route = "statistics") }
+                    )
+                    DropdownMenuItem(
                         text = { Text("Settings") },
                         onClick = {  navController.navigate(route = "settings") }
                     )
@@ -86,7 +90,7 @@ fun WriterList(navController: NavController, vm: BooksViewModel) {
             { item ->
                 Text(item.writer, modifier = modifier.
                     clickable {vm.addChooseId(item.id)
-                        vm.setChoosenWriter(item.writer)
+                        vm.setChosenWriter(item.writer)
                     navController.navigate(route = "books") })
             }
         }
