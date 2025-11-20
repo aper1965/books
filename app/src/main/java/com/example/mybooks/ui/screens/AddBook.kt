@@ -27,13 +27,12 @@ import com.example.mybooks.model.BooksViewModel
 @Composable
 fun AddBook(navController: NavController, vm: BooksViewModel) {
     val writers = vm.getWriters()
-    val choosedWriter = vm.getChosenWriter()
+    val chosenWriter = vm.getChosenWriter()
     val modifier = Modifier.padding(horizontal = 10.dp)
     val mContext = LocalContext.current
     val textDate = remember { mutableStateOf("") }
     val textTitle = remember { mutableStateOf("") }
     val textWriter = remember { mutableStateOf("") }
-    val writer: String = remember { mutableStateOf(choosedWriter).toString() }
 
     Column(modifier = Modifier
         .fitInside(WindowInsetsRulers.SafeDrawing.current)
@@ -96,7 +95,7 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
         }
 
         Row {
-            if (choosedWriter.isEmpty()) {
+            if (chosenWriter.isEmpty()) {
                 TextField(
                     value = textWriter.value,
                     onValueChange = {
@@ -107,9 +106,9 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
                         .fillMaxWidth()
                 )
             } else {
-                textWriter.value = choosedWriter
+                textWriter.value = chosenWriter
                 TextField(
-                    value = choosedWriter,
+                    value = chosenWriter,
                     onValueChange = {
                         textWriter.value = it
                     },
@@ -118,7 +117,7 @@ fun AddBook(navController: NavController, vm: BooksViewModel) {
                 )
             }
         }
-        if (choosedWriter.isEmpty()) {
+        if (chosenWriter.isEmpty()) {
 
             HorizontalDivider(thickness = 4.dp)
             Row {
