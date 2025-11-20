@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fitInside
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -47,21 +47,28 @@ fun StatBook(navController: NavController, vm: BooksViewModel) {
         }
         HorizontalDivider(thickness = 4.dp)
         var expanded by remember { mutableStateOf(false) }
-        Box (modifier = Modifier.padding(horizontal = 10.dp)) {
-            IconButton(onClick = { expanded = !expanded }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "More options")
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                for (year in years) {
-                    DropdownMenuItem(
-                        text = { Text(year) },
-                        onClick = {  vm.setChosenYear(year)
-                            navController.navigate(route = "bookWriter")
-                        }
-                    )
+        Row {
+            Text(
+                text = "Choose year", Modifier.padding(horizontal = 22.dp, vertical = 10.dp),
+                fontSize = 20.sp
+            )
+            Box {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = "More options")
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    for (year in years) {
+                        DropdownMenuItem(
+                            text = { Text(year) },
+                            onClick = {
+                                vm.setChosenYear(year)
+                                navController.navigate(route = "bookWriter")
+                            }
+                        )
+                    }
                 }
             }
         }

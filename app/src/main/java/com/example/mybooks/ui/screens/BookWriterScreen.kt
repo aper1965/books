@@ -34,6 +34,9 @@ fun BookWriterList(navController: NavController, vm: BooksViewModel) {
         HorizontalDivider(thickness = 4.dp)
         Row {
             Text(text = year, modifier = modifier, fontSize = 20.sp)
+            Text(text = " Number of books: " + booksList.size.toString(),
+                modifier = modifier, fontSize = 20.sp)
+
         }
         HorizontalDivider(thickness = 4.dp)
         Row {

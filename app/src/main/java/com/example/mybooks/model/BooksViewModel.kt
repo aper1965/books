@@ -113,7 +113,7 @@ class BooksViewModel : ViewModel() {
             }
         }
 
-        return bookTotList
+        return bookTotList.sortedWith(compareBy { it[2] }).toMutableList()
     }
 
     fun getUrl(): String {
@@ -150,7 +150,8 @@ class BooksViewModel : ViewModel() {
     fun getWriterBooks(): ArrayList<BookItem>? {
         for(wr in writerArray) {
             if(wr.id == chooseId) {
-                return wr.books
+                return wr.books.sortedWith(compareBy { it.date }).
+                toCollection(ArrayList())
             }
         }
         return null
