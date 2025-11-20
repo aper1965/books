@@ -1,5 +1,6 @@
 package com.example.mybooks.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fitInside
@@ -21,6 +22,8 @@ fun BookWriterList(navController: NavController, vm: BooksViewModel) {
     val modifier = Modifier.padding(horizontal = 10.dp)
     val year = vm.getChosenYear()
     val booksList = vm.getBooksWriter(year)
+    Log.v("MyBooks list", year)
+    Log.v("MyBooks list", booksList.toString())
 
     Column(
         modifier = Modifier
@@ -44,13 +47,17 @@ fun BookWriterList(navController: NavController, vm: BooksViewModel) {
         }
         HorizontalDivider(thickness = 4.dp)
         LazyColumn {
-            items(count = booksList.size , key = null)
+            items(booksList.size, key = null)
             { item ->
-                    Text(text = booksList[item].toString(), modifier = modifier)
-                    Text(
-                        text = booksList[item].toString(),
-                        Modifier.padding(horizontal = 50.dp)
-                    )
+                Text(text = booksList[item][0], modifier = modifier)
+                Text(
+                    text = booksList[item][1],
+                    Modifier.padding(horizontal = 50.dp)
+                )
+                Text(
+                    text = booksList[item][2],
+                    Modifier.padding(horizontal = 50.dp)
+                )
             }
         }
     }

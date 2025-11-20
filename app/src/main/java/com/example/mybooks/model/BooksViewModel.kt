@@ -98,23 +98,20 @@ class BooksViewModel : ViewModel() {
         bookDb.db = bD
     }
 
-    fun getBooksWriter(year: String): List<Any> {
-        var bookTotList: List<Any> = emptyList()
+    fun getBooksWriter(year: String): MutableList<MutableList<String>> {
+        val bookTotList: MutableList<MutableList<String>> = mutableListOf<MutableList<String>>()
 
         for(wr in writerArray) {
             for(b in wr.books) {
                 val y = "20" + b.date.take(2)
 
-                if(b.date == year) {
-                    bookTotList += listOf(b.title, wr.writer)
-                }
-                else if (y == year){
-                    bookTotList += listOf(b.title, wr.writer)
-
+                if (b.date == year) {
+                    bookTotList.add(mutableListOf(b.title, wr.writer, year))
+                } else if (y == year){
+                    bookTotList.add(mutableListOf(b.title, wr.writer, b.date))
                 }
             }
         }
-        Log.v("MyBooks tot", bookTotList.toString())
 
         return bookTotList
     }
@@ -123,9 +120,9 @@ class BooksViewModel : ViewModel() {
         return baseUrl
     }
 
-    fun setUrl(url: String) {
-        baseUrl = url
-    }
+//    fun setUrl(url: String) {
+//        baseUrl = url
+//    }
 
     fun getBookDb(): String {
         return bookDb.db
@@ -176,10 +173,6 @@ class BooksViewModel : ViewModel() {
             }
         }
         return year.distinct().sorted()
-    }
-
-    fun getBooksYears(year: String): List<String> {
-        return listOf("2023", "2024", "2025")
     }
 
     fun getBooks() {
