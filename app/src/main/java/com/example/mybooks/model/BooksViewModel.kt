@@ -19,7 +19,8 @@ private var year: String = ""
 @Serializable
 data class BookItem(
     val title: String,
-    val date: String
+    val date: String,
+    val bookId: Int
 )
 @Serializable
 data class WriterItem(
